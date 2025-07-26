@@ -5,8 +5,6 @@ The goal is to classify tree species using an image dataset and Google Colab.
 
 ---
 
-## ✅ Week-1 Tasks Completed
-
 1. Uploaded the **Tree Species Dataset** to Google Drive.
 2. Mounted Google Drive in Google Colab.
 3. Unzipped the dataset in Colab for use.
@@ -14,14 +12,28 @@ The goal is to classify tree species using an image dataset and Google Colab.
 
 ---
 
-## 📁 Dataset
+📌 Project Structure
 
-The dataset is publicly available on Kaggle:
+├── Tree_Species_Classification/
+│   ├── archive1.zip
+│   ├── cleaned_dataset/
+│   ├── train/
+│   ├── val/
+│   ├── model/
+│   ├── improved_cnn_model.h5
+│   └── notebook.ipynb
 
-👉 [Tree Species Dataset on Kaggle](https://www.kaggle.com/datasets/viditgandhi/tree-species-identification-dataset)
 
-> Please download the dataset manually and upload it to your Google Drive for use in Google Colab.
+---
 
+
+The dataset contains images of 30 tree species, each in its own folder. The dataset was cleaned by:
+
+    Removing duplicate images
+
+    Detecting and excluding corrupted files
+
+    Filtering out extreme outliers (very small or large image dimensions)
 
 ---
 
@@ -46,6 +58,34 @@ The dataset is publicly available on Kaggle:
 - Basic file handling and zip extraction
 
 ---
+
+🧪 Data Preprocessing
+
+    Used ImageDataGenerator for image rescaling and data augmentation
+
+    Resized all images to 224x224
+
+    80% for training, 20% for validation
+
+Augmentations applied:
+
+    Rotation
+
+    Zoom
+
+    Shear
+
+    Horizontal fli
+
+    ---
+    🧠 Model Architecture
+CNN Structure:
+
+Conv2D → BatchNorm → MaxPool
+Conv2D → BatchNorm → MaxPool
+Conv2D → BatchNorm → MaxPool
+Conv2D → BatchNorm → MaxPool
+Flatten → Dense → Dropout → Output(Softmax)
 
 ## 📌 Notes
 
