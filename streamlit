@@ -1,0 +1,84 @@
+import streamlit as st
+import numpy as np
+import pandas as pd
+from PIL import Image
+from tensorflow.keras.models import load_model
+
+# 🌿 Set page layout and title
+st.set_page_config(page_title="Tree Species Classifier", layout="centered")
+st.title("🌳 Tree Species Classification App")
+st.markdown("Upload a tree leaf image below and the model will predict its species 🌿.")
+
+# ℹ️ Sidebar
+with st.sidebar:
+    st.header("📌 Project Info")
+    st.write("""
+    - Internship Project
+    - 30 Tree Species
+    - CNN with EfficientNetB0 (Functional API)
+    """)
+    st.markdown("**Author:** Keruthika N")
+    st.markdown("**Dataset:** Custom Leaf Dataset")
+
+# ✅ Load Model (clears cache if error occurred before)
+@st.cache_resource
+def load_tree_model():
+    return load_model("improved_cnn_model.h5")
+
+model = load_tree_model()
+
+# 🗂️ Class indices (exactly same order as training)
+class_indices = {'amla': 0, 'asopalav': 1, 'babul': 2, 'bamboo': 3, 'banyan': 4, 'bili': 5, 'cactus': 6, 'champa': 7,
+                 'coconut': 8, 'garmalo': 9, 'gulmohor': 10, 'gunda': 11, 'jamun': 12, 'kanchan': 13, 'kesudo': 14,
+                 'khajur': 15, 'mango': 16, 'motichanoti': 17, 'neem': 18, 'nilgiri': 19, 'other': 20, 'pilikaren': 21,
+                 'pipal': 22, 'saptaparni': 23, 'shirish': 24, 'simlo': 25, 'sitafal': 26, 'sonmahor': 27,
+                 'sugarcane': 28, 'vad': 29}
+idx_to_class = {v: k for k, v in class_indices.items()}
+
+# 📷 Upload Image
+uploaded_file = st.file_uploader("📁 Upload a tree leaf image", type=["jpg", "jpeg", "png"])
+
+if uploaded_file:
+    image = Image.open(uploaded_file).convert("RGB")  # Force RGB to avoid channel mismatch
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+
+    if st.button("🔍 Predict"):
+        with st.spinner("Predicting..."):
+            # Preprocess image
+            img_resized = image.resize((224, 224))
+            img_array = np.array(img_resized) / 255.0
+            img_batch = np.expand_dims(img_array, axis=0)
+
+            # Predict
+            prediction = model.predict(img_batch)[0]
+            top_3_indices = prediction.argsort()[-3:][::-1]
+            top_3_classes = [(idx_to_class[i], prediction[i] * 100) for i in top_3_indices]
+
+        # 🧠 Show top prediction
+        st.success(f"🧠 Predicted Species: **{top_3_classes[0][0].capitalize()}** ({top_3_classes[0][1]:.2f}%)")
+
+        # 🔎 Show Top 3
+        st.markdown("### 🔎 Top 3 Predictions")
+        for cls, prob in top_3_classes:
+            st.markdown(f"- **{cls.capitalize()}**: `{prob:.2f}%`")
+
+        # 📊 Show full probabilities
+        st.markdown("### 📊 Full Class Probabilities")
+        prob_df = pd.DataFrame({
+            'Species': [idx_to_class[i] for i in range(len(prediction))],
+            'Probability (%)': prediction * 100
+        }).sort_values(by="Probability (%)", ascending=False).reset_index(drop=True)
+        st.dataframe(prob_df)
+
+# 🎨 Button Styling
+st.markdown("""
+<style>
+    .stButton > button {
+        background-color: #10b981;
+        color: white;
+        font-weight: bold;
+        border-radius: 10px;
+        padding: 8px 20px;
+    }
+</style>
+""", unsafe_allow_html=True)
