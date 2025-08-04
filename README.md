@@ -1,93 +1,74 @@
-# 🌳 Tree Species Classifier
+# 🌳 Tree Species Classification using CNN
 
-This project is part of my internship task for Week 1.  
-The goal is to classify tree species using an image dataset and Google Colab.
-
----
-
-1. Uploaded the **Tree Species Dataset** to Google Drive.
-2. Mounted Google Drive in Google Colab.
-3. Unzipped the dataset in Colab for use.
-4. Built a Jupyter notebook to work with the image dataset.
+A deep learning project that classifies tree species based on leaf images using Convolutional Neural Networks (CNNs). The model is trained on a custom dataset of **30 different tree species** and deployed using a user-friendly **Streamlit** web app.
 
 ---
 
-📌 Project Structure
+## 🧠 Problem Statement
 
-├── Tree_Species_Classification/
-│   ├── archive1.zip
-│   ├── cleaned_dataset/
-│   ├── train/
-│   ├── val/
-│   ├── model/
-│   ├── improved_cnn_model.h5
-│   └── notebook.ipynb
-
+Manual identification of tree species can be time-consuming and error-prone. This project aims to automate the process using AI, particularly CNN models, to predict the species from a tree leaf image.
 
 ---
 
+## 🎯 Learning Objectives
 
-The dataset contains images of 30 tree species, each in its own folder. The dataset was cleaned by:
-
-    Removing duplicate images
-
-    Detecting and excluding corrupted files
-
-    Filtering out extreme outliers (very small or large image dimensions)
+- 🔍 Understand and apply CNN architectures for image classification.
+- 🤖 Train a deep learning model on a real-world, multi-class dataset.
+- 🛠️ Preprocess and augment image data for better model generalization.
+- 💻 Deploy the trained model using Streamlit for real-time prediction.
 
 ---
 
-## 🚀 How to Run the Notebook
+## 🛠️ Tools & Technologies Used
 
-1. Open [Google Colab](https://colab.research.google.com/)
-2. Upload and open `TreeSpeciesClassifier.ipynb`
-3. Follow the steps:
-   - Mount your Google Drive
-   - Set the zip file path
-   - Extract the dataset
-   - Load and process the data
-
----
-
-## 🧠 Technologies Used
-
-- Python 🐍
-- Google Colab 📒
-- Google Drive 💾
-- Jupyter Notebook
-- Basic file handling and zip extraction
+| 🔧 Technology       | 💬 Purpose                            |
+|--------------------|----------------------------------------|
+| Python 🐍          | Programming language                   |
+| TensorFlow / Keras 🔧 | Model building & training         |
+| Streamlit 🌐        | Web app deployment                    |
+| NumPy / Pandas 📊   | Data manipulation                     |
+| Matplotlib 📈       | Visualization of training metrics     |
+| PIL 🖼️              | Image processing                      |
 
 ---
 
-🧪 Data Preprocessing
+## 📁 Dataset
 
-    Used ImageDataGenerator for image rescaling and data augmentation
+- **Total Classes**: 30
+- **Image Types**: Leaf images
+- **Source**: Custom dataset (Drive / Kaggle)
+- **Preprocessing**:
+  - Image resizing to `224x224`
+  - Rescaling pixel values
+  - Data Augmentation (rotation, zoom, flip)
 
-    Resized all images to 224x224
+---
 
-    80% for training, 20% for validation
+## 🏗️ Methodology
 
-Augmentations applied:
+1. **Data Preprocessing**
+   - Applied ImageDataGenerator for augmentation and validation split
 
-    Rotation
+2. **Model Building**
+   - Started with a basic CNN
+   - Improved using Batch Normalization, Dropout & Adam optimizer
 
-    Zoom
+3. **Training**
+   - Trained for up to 25 epochs using categorical crossentropy loss
 
-    Shear
+4. **Deployment**
+   - Saved model as `.h5` and created a `Streamlit` app for prediction
 
-    Horizontal fli
+---
 
-    ---
-    🧠 Model Architecture
-CNN Structure:
+## 📦 Project Structure
 
-Conv2D → BatchNorm → MaxPool
-Conv2D → BatchNorm → MaxPool
-Conv2D → BatchNorm → MaxPool
-Conv2D → BatchNorm → MaxPool
-Flatten → Dense → Dropout → Output(Softmax)
+tree_species_classifier/
+│
+├── app.py # Streamlit web app
+├── improved_cnn_model.h5 # Trained CNN model
+├── requirements.txt # Python dependencies
+├── README.md # You're reading it!
+└── dataset/ # Tree species leaf images
 
-## 📌 Notes
 
-- This is a beginner-friendly project.
-- Dataset is used only for learning and training purposes.
